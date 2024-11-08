@@ -13,7 +13,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 const modals = () => {
-  function bindModal(triggerSelector, modalSelector, closeSelector, closeClickOverlay = true) {
+  let btnPressed = false;
+  function bindModal(triggerSelector, modalSelector, closeSelector, destroy = false) {
     const trigger = document.querySelectorAll(triggerSelector);
     const modal = document.querySelector(modalSelector);
     const close = document.querySelector(closeSelector);
@@ -23,8 +24,13 @@ const modals = () => {
       if (e.target) {
         e.preventDefault();
       }
+      btnPressed = true;
+      if (destroy) {
+        item.remove();
+      }
       windows.forEach(item => {
         item.style.display = "none";
+        item.classList.add("animated", "fadeIn");
       });
       modal.style.display = "block";
       document.body.style.overflow = "hidden";
@@ -39,7 +45,7 @@ const modals = () => {
       document.body.style.marginRight = `0px`;
     });
     modal.addEventListener("click", e => {
-      if (e.target === modal && closeClickOverlay) {
+      if (e.target === modal) {
         windows.forEach(item => {
           item.style.display = "none";
         });
@@ -59,7 +65,9 @@ const modals = () => {
       });
       if (!display) {
         document.querySelector(selector).style.display = "block";
-        document.body.style.overflow = "hiiden";
+        document.body.style.overflow = "hidden";
+        let scroll = calcScroll();
+        document.body.style.marginRight = `${scroll}px`;
       }
     }, time);
   }
@@ -74,9 +82,22 @@ const modals = () => {
     div.remove();
     return scrollWidth;
   }
-  timeOutModal(".popup-consultation", 3000);
+  function openByScroll(selector) {
+    window.addEventListener("scroll", () => {
+      let scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+      if (!btnPressed && window.scrollY + document.documentElement.clientHeight >= scrollHeight) {
+        document.querySelector(selector).click();
+        btnPressed = true;
+      }
+    });
+  }
+
+  //   timeOutModal(".popup-consultation", 2000);
   bindModal(".button-design", ".popup-design", ".popup-design .popup-close");
+  bindModal(".fixed-gift", ".popup-gift", ".popup-gift .popup-close", true);
   bindModal(".button-consultation", ".popup-consultation", ".popup-consultation .popup-close");
+  bindModal(".fixed-gift", ".popup-consultation", ".popup-consultation .popup-close");
+  openByScroll(".fixed-gift");
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (modals);
 
