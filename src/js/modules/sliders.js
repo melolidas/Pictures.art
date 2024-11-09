@@ -40,9 +40,7 @@ const sliders = (slides, dir, prev, next) => {
       items[slideIndex - 1].classList.remove("slideInLeft");
       items[slideIndex - 1].classList.add("slideInRight");
     });
-  } catch (e) {
-    console.error("Кнопки навигации не найдены:", e);
-  }
+  } catch (e) {}
 
   function activateAnimation() {
     if (dir === "vertical") {
