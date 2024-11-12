@@ -6,6 +6,8 @@ import checkTextInputs from "./modules/cheсkTextInputs";
 import showMoreStyles from "./modules/showMoreStyles";
 import calc from "./modules/calc";
 import filter from "./modules/filter";
+import picturesize from "./modules/pictureSize";
+import accordion from "./modules/accordion";
 
 window.addEventListener("DOMContentLoaded", () => {
   "use strict";
@@ -25,4 +27,6 @@ window.addEventListener("DOMContentLoaded", () => {
   showMoreStyles(".button-styles", "#styles .row");
   calc("#size", "#material", "#options", ".promocode", ".calc-price");
   filter();
+  picturesize(".sizes-block");
+  accordion(".accordion-heading");
 });
